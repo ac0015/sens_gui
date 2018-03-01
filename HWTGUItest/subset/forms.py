@@ -2,8 +2,6 @@ from django import forms
 from django.http import HttpResponse
 from django.views.generic.edit import UpdateView
 import datetime
-from shapely.geometry import polygon as sp
-from shapely.geometry import mapping
 from cartopy import crs as ccrs
 import cartopy.feature as cfeat
 import fiona
