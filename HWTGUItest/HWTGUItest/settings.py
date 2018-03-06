@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'leaflet',
+    'subset'
 ]
 
 MIDDLEWARE = [
@@ -117,3 +119,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Leaflet configuration
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (33.5, -102.0),
+    'DEFAULT_ZOOM': 5,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'TILES': [ ("Standard", "http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg", {'attribution': 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'})],
+    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
+     'PLUGINS': {
+          'forms': {
+               'auto-include': True
+        }
+    }
+}

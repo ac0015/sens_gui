@@ -1,10 +1,10 @@
 from django import forms
 from django.http import HttpResponse
 from django.views.generic.edit import UpdateView
+from leaflet.forms.widgets import LeafletWidget
 import datetime
 from cartopy import crs as ccrs
 import cartopy.feature as cfeat
-import fiona
 import numpy as np
 import matplotlib.pyplot as plt
 import os

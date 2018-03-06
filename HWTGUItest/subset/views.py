@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import SubsetForm
 from django.template import loader
+from leaflet.forms.widgets import LeafletWidget
 
 def index(request):
     form = SubsetForm()
