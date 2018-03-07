@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 {% load leaflet_tags %}
+{% load static %}
 <html>
   <head>
-      <h1>SENSitivity Subsetting Ensemble Interface (SENSEI)</h1>
       <style>
           .leaflet-container {  /* all maps */
               width:  600px;
               height: 600px;
           }
+          
+          .overlay {
+              background-color: white;
+              background: rgba(255,255,255, 0.5);
+              position: relative;
+              margin: 0 auto;
+              height: 100%;
+              width: 60%;
+              padding: 20px;
+          }
+          
           #map { 
               position: relative; top:0; bottom:0; right:0; left:0; 
               width:600px; height:600px;
               margin:0 auto;
           }
+          
           form, body, input {
               font-family: "Arial";
               position: relative;
               text-align: center;
           }
+          
+          body {
+              background-image: url("{% static "subset-bg.png" %}");
+              background-repeat: no-repeat;
+              background-attachment: fixed;
+              background-position: center;
+              background-size: 100% 100%;
+          }
+
       </style>
+      
       {% leaflet_js %}
       {% leaflet_css %}
+      
       <script>
             var name_object = $('#id_llon');
             var current_name = name_object.val();
             var new_name = "new_name"
             name_object.attr('value',new_name);
       </script>
+      
       <script type="text/javascript">
             function main_map_init (map, options) {
                 var drawnItems = new L.FeatureGroup();
@@ -63,10 +87,10 @@
                 
                 function updateRbox(layer) {
                     var latlons = layer.getBounds().toBBoxString().split(',');
-                    var llo = latlons[0];
-                    var lla = latlons[1];
-                    var ulo = latlons[2];
-                    var ula = latlons[3];
+                    var llo = latlons[0],
+                        lla = latlons[1],
+                        ulo = latlons[2],
+                        ula = latlons[3];
                     document.getElementById("llon").value = llo;
                     document.getElementById("llat").value = lla;
                     document.getElementById("ulon").value = ulo;
@@ -74,17 +98,20 @@
                 }
             }
       </script>
+      
   </head>
   <body>
-  <form action="/subset/results", method="POST">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <div id="map">
-    {% leaflet_map "main" callback="main_map_init" %}
-    </div>
-    <br>
-    <input type="submit" value="Submit">
-   </form> 
-      
-  </body>
+      <div class='overlay'>
+          <h1>SENSitivity Subsetting Ensemble Interface (SENSEI)</h1>
+          <form action="/subset/results", method="POST">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <div id="map">
+                    {% leaflet_map "main" callback="main_map_init" %}
+                </div>
+                <br>
+                <input type="submit" value="Submit">
+           </form> 
+        </div>
+    </body>
 </html>
