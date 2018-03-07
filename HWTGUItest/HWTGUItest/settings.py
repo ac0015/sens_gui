@@ -135,5 +135,3 @@ LEAFLET_CONFIG = {
     },
     'RESET_VIEW' : False,
 }
-
-STATIC_URL = '/static/'

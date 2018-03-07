@@ -1,20 +1,7 @@
 from django import forms
 from django.http import HttpResponse
-from django.views.generic.edit import UpdateView
-from leaflet.forms.widgets import LeafletWidget
 import datetime
-from cartopy import crs as ccrs
-import cartopy.feature as cfeat
-import numpy as np
-import matplotlib.pyplot as plt
 import os
-
-###################################################
-# What actions does this form need to accomplish?
-# - Select options
-# - Link box lat/lons to form lat/lons
-# - Submit
-##################################################
 
 class SubsetForm(forms.Form):
     max1hruh = 'Max 1h UH'
@@ -42,6 +29,7 @@ class SubsetForm(forms.Form):
                                run.day, hr)
     old = newest - datetime.timedelta(hours=12)
     oldest = old - datetime.timedelta(hours=12)
+    
     rchoices = (
         (max1hruh, 'Maximum 1h Updraft Helicity'),
         (max6hruh, 'Maximum 6h Updraft Helicity'),
@@ -56,6 +44,7 @@ class SubsetForm(forms.Form):
         (avguh, 'Average 1h Updraft Helicity'),
         (avgwspd, 'Average Wind Speed'),
     )
+    
     runchoices = (
         (newest, str(newest)),
         (old, str(old)),
