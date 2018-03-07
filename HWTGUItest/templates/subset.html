@@ -2,56 +2,37 @@
 {% load leaflet_tags %}
 <html>
   <head>
+      <h1>SENSitivity Subsetting Ensemble Interface (SENSEI)</h1>
       <style>
-            .leaflet-container {  
-            width:  600px;
-            height: 400px;
-            }
+          .leaflet-container {  /* all maps */
+              width:  600px;
+              height: 600px;
+          }
+          #map { 
+              position: relative; top:0; bottom:0; right:0; left:0; 
+              width:600px; height:600px;
+              margin:0 auto;
+          }
+          form, body, input {
+              font-family: "Arial";
+              position: relative;
+              text-align: center;
+          }
       </style>
       {% leaflet_js %}
       {% leaflet_css %}
+      <script>
+            var name_object = $('#id_llon');
+            var current_name = name_object.val();
+            var new_name = "new_name"
+            name_object.attr('value',new_name);
+      </script>
       <script type="text/javascript">
             function main_map_init (map, options) {
-                var bounds = [{
-                "type": "Feature",
-                "properties": {"rbox": "rbox"},
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [[
-                    [
-                      {{ form.llon.initial }},
-                      {{ form.llat.initial }}
-                    ],
-                    [
-                      {{ form.ulon.initial }},
-                      {{ form.llat.initial }}
-                    ],
-                    [
-                      {{ form.ulon.initial }},
-                      {{ form.ulat.initial }}
-                    ],
-                    [
-                      {{ form.llon.initial }},
-                      {{ form.ulat.initial }}
-                    ],
-                    [
-                      {{ form.llon.initial }},
-                      {{ form.llat.initial }}
-                     ]]
-                    ]
-                   }
-                  }];
-
-                 L.geoJSON(bounds, {
-                    style: function(feature) {
-                    return {color: "#ff0000"}
-                    }
-                 }).addTo(map);  
+                var drawnItems = new L.FeatureGroup();
+                map.addLayer(drawnItems);
                 
-                 var drawnItems = new L.FeatureGroup();
-                 map.addLayer(drawnItems);
-                
-                 var drawControl = new L.Control.Draw({
+                var drawControl = new L.Control.Draw({
                      draw: {
                          polygon: false,
                          marker: false,
@@ -59,17 +40,38 @@
                          circle: false
                      },
                      edit: {
-                         featureGroup: drawnItems
+                         featureGroup: drawnItems,
+                         editable: true
                      }
-                 });
-                 map.addControl(drawControl);
+                });
+                map.addControl(drawControl);
                 
-                 map.on('draw:created', function (e) {
+                map.on('draw:created', function (e) {
                     var type = e.layerType,
-                    layer = e.layer;
-                    layer.editing.enable()
-                    map.addLayer(layer);
+                        layer = e.layer;
+                    layer.setStyle({color: "#4B1BDE"});
+                    drawnItems.addLayer(layer);
+                    updateRbox(layer);
+                });
+                
+                map.on('draw:edited', function (e) {
+                     var layers = e.layers;
+                     layers.eachLayer(function (layer) {
+                         updateRbox(layer);
+                     });
                  });
+                
+                function updateRbox(layer) {
+                    var latlons = layer.getBounds().toBBoxString().split(',');
+                    var llo = latlons[0];
+                    var lla = latlons[1];
+                    var ulo = latlons[2];
+                    var ula = latlons[3];
+                    document.getElementById("llon").value = llo;
+                    document.getElementById("llat").value = lla;
+                    document.getElementById("ulon").value = ulo;
+                    document.getElementById("ulat").value = ula;
+                }
             }
       </script>
   </head>
@@ -77,9 +79,12 @@
   <form action="/subset/results", method="POST">
     {{ form.as_p }}
     {% csrf_token %}
+    <div id="map">
     {% leaflet_map "main" callback="main_map_init" %}
+    </div>
     <br>
     <input type="submit" value="Submit">
    </form> 
+      
   </body>
 </html>

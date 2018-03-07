@@ -62,10 +62,14 @@ class SubsetForm(forms.Form):
         (oldest, str(oldest)),
     )
     
-    llat = forms.CharField(initial=37.78, label="Lower Latitude")
-    ulat = forms.CharField(initial=42.16, label="Upper Latitude")
-    llon = forms.CharField(initial=-99.14, label="Lower Longitude")
-    ulon = forms.CharField(initial=-93.29, label="Upper Longitude")
+    llat = forms.CharField(widget = forms.TextInput(attrs = {'id':'llat'}), 
+                           required=True, initial=37.78, label="Lower Latitude")
+    ulat = forms.CharField(widget = forms.TextInput(attrs = {'id':'ulat'}), 
+                           required=True, initial=42.16, label="Upper Latitude")
+    llon = forms.CharField(widget = forms.TextInput(attrs = {'id':'llon'}), 
+                           required=True, initial=-99.14, label="Lower Longitude")
+    ulon = forms.CharField(widget = forms.TextInput(attrs = {'id':'ulon'}), 
+                           required=True, initial=-93.29, label="Upper Longitude")
     rfuncs = forms.ChoiceField(label="Response Function")
     rfuncs.choices = rchoices
     rtime = forms.CharField(initial=18, label="Response Time")

@@ -132,5 +132,6 @@ LEAFLET_CONFIG = {
           'forms': {
                'auto-include': True
         }
-    }
+    },
+    'RESET_VIEW' : False,
 }
