@@ -2,6 +2,7 @@ from django import forms
 from django.http import HttpResponse
 import datetime
 import os
+import numpy as np
 
 class SubsetForm(forms.Form):
     max1hruh = 'Max 1h UH'
@@ -59,30 +60,36 @@ class SubsetForm(forms.Form):
                            required=True, initial=-99.14, label="Lower Longitude")
     ulon = forms.CharField(widget = forms.TextInput(attrs = {'id':'ulon'}), 
                            required=True, initial=-93.29, label="Upper Longitude")
-    rfuncs = forms.ChoiceField(label="Response Function")
-    rfuncs.choices = rchoices
+    #rfuncs = forms.ChoiceField(label="Response Function")
+    #rfuncs.choices = rchoices
     rtime = forms.CharField(initial=18, label="Response Time")
-    run = forms.ChoiceField(label="Ensemble Run")
-    run.choices = runchoices
+    #run = forms.ChoiceField(label="Ensemble Run")
+    #run.choices = runchoices
 
     def createSubset(self):
         submittime = datetime.datetime.utcnow()
         displaystr = "You have called the create subset function. Congrats dawg"
         if self.is_valid():
+            # Create namelist for fortran sensitivity code driver
+            fpath = "subsetTEST.txt"
+            txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon']), 
+                   str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
+                   str(self.cleaned_data['ulat'])]
+            np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
             # Format UI as strings
             llat = "Lower Latitude: " + self.cleaned_data['llat']
             ulat = "Upper Latitude: " + self.cleaned_data['ulat']
             wlon = "Western Longitude: " + self.cleaned_data['llon']
             elon = "Eastern Longitude: " + self.cleaned_data['ulon']
-            rfunc = "Response Function: " + self.cleaned_data['rfuncs']
+            #rfunc = "Response Function: " + self.cleaned_data['rfuncs']
             rtime = "Response Function Time: " + self.cleaned_data['rtime']
-            run = "Ensemble Run: " + self.cleaned_data['run']
+            #run = "Ensemble Run: " + self.cleaned_data['run']
             # Format time submitted as string
             request_time = "Create Subset Request Submitted at: " + str(submittime)
             # Format response string
             inputstr = llat + "<br>" + ulat + "<br>" + wlon + "<br>" \
-                + elon + "<br>" + rfunc + "<br>" + rtime + "<br>" + run + "<br>" + request_time 
-            response = HttpResponse(displaystr + "<br><br>Subset Attributes:<br>" + inputstr)
+                + elon + "<br>" + rtime + "<br>" + request_time 
+            response = HttpResponse(displaystr + "<br><br>Subset Attributes:<br>" + inputstr)            
         else:
             response = "Form is not valid"
             

@@ -9,4 +9,5 @@ def index(request):
 
 def results(request):
     form = SubsetForm(request.POST)
-    return form.createSubset()
+    #return form.createSubset()
+    return render(request, 'results.html', {'response': form.createSubset()})
