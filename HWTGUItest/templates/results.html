@@ -25,6 +25,8 @@
 //     modified by D. Watson and A. Earnhart (CIRA/CSU), 7/30/97
 //     and Greg Thompson (NCAR/RAP) May 07, 2000
 //
+//     donated to the GUI cause by Kevin Goebbert, 3/26/18
+//
 //============================================================
  
 //********* SET UP THESE VARIABLES - MUST BE CORRECT!!!*********************
@@ -338,8 +340,7 @@ function animation()
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_rev1.gif" ALT="-1"></A><A
                        HREF="JavaScript: func()" onClick="change_mode(1);rev()"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
-                       SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_rev.gif" 
-                        ALT="Rev"></A><A
+                       SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_rev.gif" ALT="Rev"></A><A
                       HREF="JavaScript: func()" onClick="stop()"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_stop.gif" ALT="Stop"></A><A
@@ -371,32 +372,54 @@ function animation()
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_fast.gif" ALT="fast"></A>
                       <BR>&#160;<BR>
                       <FONT SIZE=-1 COLOR="#3300CC"> Dwell First/Last:</FONT><BR>
-                      <A HREF="JavaScript: func()" 
-onClick="change_start_dwell(-dwell_step)"><IMG BORDER=0
+                      <A HREF="JavaScript: func()" onClick="change_start_dwell(-dwell_step)"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_dw1_dec.gif" ALT="short"></A><A
-                      HREF="JavaScript: func()" onClick="change_start_dwell(dwell_step)"><IMG 
-BORDER=0
+                      HREF="JavaScript: func()" onClick="change_start_dwell(dwell_step)"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_dw1_inc.gif" ALT="long"></A><A
-                      HREF="JavaScript: func()" onClick="change_end_dwell(-dwell_step)"><IMG 
-BORDER=0
+                      HREF="JavaScript: func()" onClick="change_end_dwell(-dwell_step)"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_dw2_dec.gif" ALT="short"></A><A
-                      HREF="JavaScript: func()" onClick="change_end_dwell(dwell_step)"><IMG 
-BORDER=0
+                      HREF="JavaScript: func()" onClick="change_end_dwell(dwell_step)"><IMG BORDER=0
                        HSPACE=0 VSPACE=0 WIDTH=29 HEIGHT=24
                        SRC="http://fujita.valpo.edu/~kgoebber/java_but/button_dw2_inc.gif" ALT="long"></A>
                       <FORM METHOD="POST" NAME="control_form">
                          <FONT SIZE=-1 COLOR="#3300CC">Frame No:</FONT>
-                         <INPUT TYPE="text" NAME="frame_nr" VALUE=9 SIZE="2" 
-onFocus="this.select()" onChange="go2image(this.value)"></INPUT><BR>&#160;<BR>
+                         <INPUT TYPE="text" NAME="frame_nr" VALUE=9 SIZE="2" onFocus="this.select()" onChange="go2image(this.value)">
+                          </INPUT><BR>&#160;<BR>
                       </FORM>
-                   </TH>
+                    </TH>
                    <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
                       <IMG NAME="animation" BORDER=0
                        WIDTH=300 HEIGHT=200 ALT="model image">
                    </TD>
+                   <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
+                      <IMG NAME="animation2" BORDER=0
+                       WIDTH=300 HEIGHT=200 ALT="model image">
+                   </TD>
+                   <TR>
+                       <TH ALIGN=CENTER BGCOLOR="#999999" COLSPAN="2">&#160;</TH>
+                   </TR>
+                   <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
+                      <IMG NAME="animation3" BORDER=0
+                       WIDTH=300 HEIGHT=200 ALT="model image">
+                   </TD>
+                   <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
+                      <IMG NAME="animation4" BORDER=0
+                       WIDTH=300 HEIGHT=200 ALT="model image">
+                   </TD>
+                   <TR>
+                       <TH ALIGN=CENTER BGCOLOR="#999999" COLSPAN="2">&#160;</TH>
+                   </TR>
+                   <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
+                      <IMG NAME="animation3" BORDER=0
+                       WIDTH=300 HEIGHT=200 ALT="model image">
+                   </TD>
+                   <TD BGCOLOR="#999999" ALIGN=CENTER VALIGN=MIDDLE>
+                      <IMG NAME="animation4" BORDER=0
+                       WIDTH=300 HEIGHT=200 ALT="model image">
+                   </TD> 
                </TR>
              </TABLE>
 </P>

@@ -1,5 +1,6 @@
 from django import forms
 from django.http import HttpResponse
+from threading import Condition
 import datetime
 import os
 import numpy as np
@@ -63,19 +64,49 @@ class SubsetForm(forms.Form):
     #rfuncs = forms.ChoiceField(label="Response Function")
     #rfuncs.choices = rchoices
     rtime = forms.CharField(initial=18, label="Response Time")
-    #run = forms.ChoiceField(label="Ensemble Run")
-    #run.choices = runchoices
+    run = forms.ChoiceField(label="Ensemble Run")
+    run.choices = runchoices
 
     def createSubset(self):
         submittime = datetime.datetime.utcnow()
         displaystr = "You have called the create subset function. Congrats dawg"
         if self.is_valid():
-            # Create namelist for fortran sensitivity code driver
+            # Create input file for fortran sensitivity code driver
             fpath = "subsetTEST.txt"
             txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon']), 
                    str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
                    str(self.cleaned_data['ulat'])]
             np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
+            
+            ############## Leave commented until brought over to Linux side ###########################
+            ## Create Sens object
+            #sens = Sens(llat = self.cleaned_data['llat'], ulat = self.cleaned_data['ulat'],
+                #llon = self.cleaned_data['llon'], ulon = self.cleaned_data['ulon'],
+                #rfuncstr = "", rtime = self.cleaned_data['rtime'], run = self._cleaned_data['run'])
+            #sens.setDir("...")
+            ## Create Subset object
+            #sub = Subset(sens)
+            #sub.interpRAP()
+            ############################################################################################
+            
+            # Wait for Brian's probability output file(s)
+            cv = Condition()
+            with cv:
+                while not os.path.exists("test.txt"):
+                    cv.wait(timeout=2)
+                    
+            ############## Leave commented until brought over to Linux side ###########################
+            ## Run plotting code
+            #numresponses = 3
+            #for i in range(numresponses):
+                #sub.plotProbs(use_subset=False) # full ensemble probs
+                #sub.plotProbs(use_subset=True) # subset probs
+                #sub.plotDiff() # delta probs probs
+            #sub.plotPaintball()  
+            #sub.plotStormReports()
+            #sub.plotSPCProbs()
+            ############################################################################################
+                    
             # Format UI as strings
             llat = "Lower Latitude: " + self.cleaned_data['llat']
             ulat = "Upper Latitude: " + self.cleaned_data['ulat']
@@ -89,7 +120,7 @@ class SubsetForm(forms.Form):
             # Format response string
             inputstr = llat + "<br>" + ulat + "<br>" + wlon + "<br>" \
                 + elon + "<br>" + rtime + "<br>" + request_time 
-            response = HttpResponse(displaystr + "<br><br>Subset Attributes:<br>" + inputstr)            
+            response = HttpResponse(displaystr + "<br><br>Subset Attributes:<br>" + inputstr)    
         else:
             response = "Form is not valid"
             
