@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^results', views.results, name='results'),
-    url(r'^$_update_form', views.index, name='update'),
+    url(r'^eval', views.evaluate, name='eval'),
 ]

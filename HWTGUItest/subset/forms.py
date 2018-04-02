@@ -69,7 +69,6 @@ class SubsetForm(forms.Form):
 
     def createSubset(self):
         submittime = datetime.datetime.utcnow()
-        displaystr = "You have called the create subset function. Congrats dawg"
         if self.is_valid():
             # Create input file for fortran sensitivity code driver
             fpath = "subsetTEST.txt"
@@ -78,27 +77,35 @@ class SubsetForm(forms.Form):
                    str(self.cleaned_data['ulat'])]
             np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
             
+            # Add run date to subset date archive
+            self.addRunDate()
+            
             # Wait for plots
             cv = Condition()
             with cv:
                 while not os.path.exists("test.png"):
                     cv.wait(timeout=2)
-                  
-            # Format UI as strings
-            llat = "Lower Latitude: " + self.cleaned_data['llat']
-            ulat = "Upper Latitude: " + self.cleaned_data['ulat']
-            wlon = "Western Longitude: " + self.cleaned_data['llon']
-            elon = "Eastern Longitude: " + self.cleaned_data['ulon']
-            #rfunc = "Response Function: " + self.cleaned_data['rfuncs']
-            rtime = "Response Function Time: " + self.cleaned_data['rtime']
-            #run = "Ensemble Run: " + self.cleaned_data['run']
-            # Format time submitted as string
-            request_time = "Create Subset Request Submitted at: " + str(submittime)
-            # Format response string
-            inputstr = llat + "<br>" + ulat + "<br>" + wlon + "<br>" \
-                + elon + "<br>" + rtime + "<br>" + request_time 
-            response = HttpResponse(displaystr + "<br><br>Subset Attributes:<br>" + inputstr)    
+                    
+            # Return time of createSubset request
+            response = HttpResponse(submittime)    
         else:
             response = "Form is not valid"
             
-        return response
+        return response    
+            
+    def addRunDate(self):
+        '''
+        If createSubset() is called, add run initialization to text file containing
+        list of all valid subsets.
+        '''
+        date = self.cleaned_data['runchoice']
+        # Store dates in form YYMMDDHH
+        datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
+        if os.path.exists('dates.txt'):
+            f = open('dates.txt', 'a')
+            datestr = "," + datestr
+        else:
+            f = open('dates.txt', 'w')   
+        f.write(datestr)
+        f.close()
+        return
