@@ -20,17 +20,12 @@ class SubsetForm(forms.Form):
     avgwspd = 'Avg Wind Spd'
     
     now = datetime.datetime.utcnow()
-    if (now.hour < 12):
-        hr = 0
-        day = -1
-    else:
-        hr = 12
-        day = 0
-    run = now + datetime.timedelta(days=day)
+    hr = 0
+    run = now
     newest = datetime.datetime(run.year, run.month,
                                run.day, hr)
-    old = newest - datetime.timedelta(hours=12)
-    oldest = old - datetime.timedelta(hours=12)
+    old = newest - datetime.timedelta(days=1)
+    oldest = old - datetime.timedelta(days=1)
     
     rchoices = (
         (max1hruh, 'Maximum 1h Updraft Helicity'),
@@ -71,20 +66,25 @@ class SubsetForm(forms.Form):
         submittime = datetime.datetime.utcnow()
         if self.is_valid():
             # Create input file for fortran sensitivity code driver
-            fpath = "subsetTEST.txt"
+            date = self.cleaned_data['runchoice']
+            datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
+            fpath = "/home/aucolema/subsetGUI.txt".format(datestr)
             txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon']), 
                    str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
                    str(self.cleaned_data['ulat'])]
-            np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
+            #np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
+            f = open(os.open(fpath, os.O_CREAT | os.O_WRONLY, 0o777), 'w')
+            for item in txt:
+                f.write("%s\n" % item)
             
             # Add run date to subset date archive
             self.addRunDate()
             
             # Wait for plots
-            cv = Condition()
-            with cv:
-                while not os.path.exists("test.png"):
-                    cv.wait(timeout=2)
+            #cv = Condition()
+            #with cv:
+            #    while not os.path.exists("test.png"):
+            #        cv.wait(timeout=2)
                     
             # Return time of createSubset request
             response = HttpResponse(submittime)    
@@ -102,10 +102,13 @@ class SubsetForm(forms.Form):
         # Store dates in form YYMMDDHH
         datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
         if os.path.exists('dates.txt'):
+            datelist = np.genfromtxt('dates.txt', dtype=str, delimiter=",")
             f = open('dates.txt', 'a')
-            datestr = "," + datestr
+            if datestr not in datelist:
+                datestr = "," + datestr
+                f.write(datestr)
         else:
             f = open('dates.txt', 'w')   
-        f.write(datestr)
+            f.write(datestr)
         f.close()
         return

@@ -14,9 +14,15 @@ def results(request):
     return render(request, 'results.html', {'response': form.createSubset(), 'form': form})
 
 def evaluate(request):
-    lastten = np.genfromtxt('dates.txt', delimiter=',', dtype=str)[-1:-10:-1]
-    basedir = '.'
-    #for date in lastten:
-    #    #if os.path.exists(basedir + date):
-    #        # keep date in list #
+    try:
+        lastten = np.genfromtxt('dates.txt', delimiter=',', dtype=str)[-1:-10:-1]
+    except IOError:
+        print("dates.txt does not exist.")
+        lastten = []
+    except IndexError:
+        print("Insufficient number of values in dates.txt. Using last val")
+        lastval = np.genfromtxt('dates.txt', delimiter=',', dtype=str)
+        lastten = [lastval]
+    except Exception as e:
+        raise(e)
     return render(request, 'eval.html', {'lastten': lastten})

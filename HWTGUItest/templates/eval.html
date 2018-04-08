@@ -39,7 +39,6 @@
                 border-top: none;
             }
         </STYLE>
-        <TITLE> Subset Results </TITLE> 
     </HEAD>   
     <DIV id="mainDiv">
       <DIV id="left_side_menu" style="border:1px solid #ccc; padding:10px;">
@@ -63,22 +62,22 @@
     </DIV>
     <DIV class="tab">
       <button class="tablinks" onclick="openTab(event, 'UH Maximum')" id="defaultOpen">UH Maximum</button>
+      <button class="tablinks" onclick="openTab(event, 'DBZ Coverage')">DBZ Coverage</button>
       <button class="tablinks" onclick="openTab(event, 'UH Coverage')">UH Coverage</button>
-      <button class="tablinks" onclick="openTab(event, 'DBZ Maximum')">DBZ Maximum</button>
       <button class="tablinks" onclick="openTab(event, 'Evaluation')">Evaluation</button>
     </DIV>
     <DIV id="UH Maximum" class="tabcontent">
       <h3>Updraft Helicity 6-hour Maximum</h3>
-      <img id='uhmax' height="400" width="400">
+      <img id='uhmax' height="800" width="700">
         <p id='output'></p>
+    </DIV>
+    <DIV id="DBZ Coverage" class="tabcontent">
+      <h3>Reflectivity 6-hour Coverage</h3>
+      <img id='dbzcov' height="800" width="700">
     </DIV>
     <DIV id="UH Coverage" class="tabcontent">
       <h3>Updraft Helicity 6-hour Coverage</h3>
-      <img src="{% static "SPCreport20160508_23Z.png" %}" height="400" width="400">
-    </DIV>
-    <DIV id="DBZ Maximum" class="tabcontent">
-      <h3>Reflectivity 6-hour Maximum</h3>
-      <img src="{% static "SPCreport20160508_23Z.png" %}" height="400" width="400">
+      <img id='uhcov' height="800" width="700">
     </DIV>
     <DIV id="Evaluation" class="tabcontent" align="center">
         <script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd0SXyEet4RAfgdLIgJ61TFyTPebzrdWduKniKgajNjfL.js"].join(""),a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script><a style="font: 12px Helvetica, sans-serif; color: #999; text-decoration: none;" href=https://www.surveymonkey.com> Create your own user feedback survey </a>
@@ -86,8 +85,12 @@
     <br>
     <button onclick="location.href='{% url 'index' %}'">Back to SENSEI</button>
     <SCRIPT>
-        var uhmaximage = "{% static "SPCreport20160508_23Z.png" %}";
+        var uhmaximage = "{% static "sixpanel_sixhruhmax25_subuhmax_2018040700_f24.png" %}";
+        var refl40image = "{% static "sixpanel_sixhrrefl40_subdbzcov_2018040700_f24.png" %}";
+        var uhcovimage = "{% static "sixpanel_sixhruhmax25_subuhcov_2018040700_f24.png" %}";
         document.getElementById('uhmax').src = uhmaximage;
+        document.getElementById('dbzcov').src = refl40image;
+        document.getElementById('uhcov').src = uhcovimage;
         
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
@@ -105,9 +108,13 @@
         document.getElementById("defaultOpen").click();
         
         function gotoRun(r) {
-            uhmaximage = 'http://www.spc.noaa.gov/climo/reports/160508_rpts.gif'
+            var uhmaximage = "{% static "sixpanel_sixhruhmax25_subuhmax_2018040600_f24.png" %}";
+            var refl40image = "{% static "sixpanel_sixhrrefl40_subdbzcov_2018040600_f24.png" %}";
+            var uhcovimage = "{% static "sixpanel_sixhruhmax25_subuhcov_2018040600_f24.png" %}";
             document.getElementById('uhmax').src = uhmaximage;
-            document.getElementById('output').innerHTML = "Testing img src changes (should show SPC reports from May 8, 2016). Selected: " + r;
+            document.getElementById('dbzcov').src = refl40image;
+            document.getElementById('uhcov').src = uhcovimage;            
+            document.getElementById('output').innerHTML = "Testing img src changes. Selected: " + r;
         }
 
     </SCRIPT>

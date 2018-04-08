@@ -1,6 +1,8 @@
 <HTML>  
     <HEAD>
         {% load static %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <STYLE>
              form, body, input {
                   font-family: "Arial";
@@ -37,12 +39,12 @@
             }
         </STYLE>
         <TITLE>Subset Results</TITLE> 
-    </HEAD>   
+    </HEAD>
     <DIV class="tab">
       <button class="tablinks" onclick="openTab(event, 'Subset Metadata')" id="defaultOpen">Subset Metadata</button>
       <button class="tablinks" onclick="openTab(event, 'UH Maximum')">UH Maximum</button>
+      <button class="tablinks" onclick="openTab(event, 'DBZ Coverage')">DBZ Coverage</button>
       <button class="tablinks" onclick="openTab(event, 'UH Coverage')">UH Coverage</button>
-      <button class="tablinks" onclick="openTab(event, 'DBZ Maximum')">DBZ Maximum</button>
     </DIV>
     <DIV id="Subset Metadata" class="tabcontent">
         <h4> Subset creation successful.</h4>
@@ -59,16 +61,16 @@
         <p><b>Subset Request submitted at:</b> {{ response.content }}</p>
     </DIV>
     <DIV id="UH Maximum" class="tabcontent">
-      <h3>Updraft Helicity 6-hour Maximum</h3>
-      <img src="{% static "SPCreport20160508_23Z.png" %}" height="400" width="400">
+      <h3>Updraft Helicity 1-hour Maximum</h3>
+      <img height=800px width=700px src="{% static "sixpanel_uhmax25_subuhmax_2018040600_f23.png" %}">
+    </DIV>
+        <DIV id="DBZ Coverage" class="tabcontent">
+      <h3>Reflectivity 1-hour Coverage</h3>
+      <img height=800px width=700px src="{% static "sixpanel_refl40_subdbzcov_2018040600_f23.png" %}">
     </DIV>
     <DIV id="UH Coverage" class="tabcontent">
-      <h3>Updraft Helicity 6-hour Coverage</h3>
-      <img src="{% static "SPCreport20160508_23Z.png" %}" height="400" width="400">
-    </DIV>
-    <DIV id="DBZ Maximum" class="tabcontent">
-      <h3>Reflectivity 6-hour Maximum</h3>
-      <img src="{% static "SPCreport20160508_23Z.png" %}" height="400" width="400">
+      <h3>Updraft Helicity 1-hour Coverage</h3>
+      <img height=800px width=700px src="{% static "sixpanel_uhmax25_subuhcov_2018040600_f23.png" %}">
     </DIV>
     <br>
     <button onclick="location.href='{% url 'index' %}'">Back to SENSEI</button>

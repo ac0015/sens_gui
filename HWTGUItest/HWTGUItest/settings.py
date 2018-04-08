@@ -120,6 +120,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/home/aucolema/'
+]
+
 # Leaflet configuration
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (33.5, -102.0),
