@@ -73,7 +73,7 @@ class SubsetForm(forms.Form):
                    str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
                    str(self.cleaned_data['ulat'])]
             #np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
-            f = open(os.open(fpath, os.O_CREAT | os.O_WRONLY, 0o777), 'w')
+            f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
             for item in txt:
                 f.write("%s\n" % item)
             
