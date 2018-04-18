@@ -44,12 +44,10 @@ class SubsetForm(forms.Form):
     
     runchoices = (
         (newest, str(newest)),
-        (old, str(old)),
-        (oldest, str(oldest)),
     )
     
-    llat = forms.DecimalField(widget = forms.NumberInput(attrs = {'id':'llat'}), 
-                           required=True, initial=37.79, label="Lower Latitude",decimal_places=2, max_digits=5)
+    llat = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'llat'} ), 
+                           required=True, initial=37.79, label="Lower Latitude")
     ulat = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'ulat'}), 
                            required=True, initial=42.16, label="Upper Latitude")
     llon = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'llon'}), 
@@ -58,7 +56,7 @@ class SubsetForm(forms.Form):
                            required=True, initial=-93.29, label="Upper Longitude")
     #rfuncs = forms.ChoiceField(label="Response Function")
     #rfuncs.choices = rchoices
-    rtime = forms.CharField(initial=18, label="Response Time")
+    rtime = forms.IntegerField(widget = forms.NumberInput(attrs = {'max_value':24}),initial=18, label="Response Time")
     runchoice = forms.ChoiceField(label="Ensemble Run")
     runchoice.choices = runchoices
 
@@ -66,28 +64,17 @@ class SubsetForm(forms.Form):
         submittime = datetime.datetime.utcnow()
         if self.is_valid():
             # Create input file for fortran sensitivity code driver
-            date = self.cleaned_data['runchoice']
-            datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
-            fpath = "/home/aucolema/sens_gui/subsetGUI.txt".format(datestr)
-            txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon']), 
-                   str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
-                   str(self.cleaned_data['ulat'])]
-            #np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
-            f = open(fpath, 'w')
-            ####f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
+            fpath = "/home/aucolema/sens_gui/subsetGUI.txt"
+            txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon'])[:6], 
+                   str(self.cleaned_data['ulon'])[:6], str(self.cleaned_data['llat'])[:6], 
+                   str(self.cleaned_data['ulat'])[:6]]
+            f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
             for item in txt:
                 f.write("%s\n" % item)
             
             # Add run date to subset date archive
             self.addRunDate()
-            
-            # Wait for plots
-            #cv = Condition()
-            #with cv:
-            #    while not os.path.exists("test.png"):
-            #        cv.wait(timeout=2)
-                    
-            # Return time of createSubset request
+
             response = HttpResponse(submittime)    
         else:
             response = "Form is not valid"
