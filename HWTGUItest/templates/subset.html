@@ -19,6 +19,13 @@
               width: 60%;
               padding: 20px;
           }
+
+	 .links {
+	      position: absolute;
+              right: 30px;
+              width: 200px;
+              height: 30px;
+         }
           
           #map { 
               position: relative; top:0; bottom:0; right:0; left:0; 
@@ -95,9 +102,10 @@
       
   </head>
   <body>
+      <button class='links' onclick="location.href='{% url 'eval' %}'">Evaluation Page</button>
       <div class='overlay'>
           <h1>SENsitivity Subsetting Ensemble Interface (SENSEI)</h1>
-          <form action="/subset/results", method="POST">
+          <form action="results", method="POST">
                 {{ form.as_p }}
                 {% csrf_token %}
                 <div id="map">
@@ -107,7 +115,5 @@
                 <input type="submit" value="Submit">
            </form> 
         </div>
-      <br>
-      <button onclick="location.href='{% url 'eval' %}'">Evaluation Page</button>
-    </body>
+   </body>
 </html>

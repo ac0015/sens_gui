@@ -48,13 +48,13 @@ class SubsetForm(forms.Form):
         (oldest, str(oldest)),
     )
     
-    llat = forms.CharField(widget = forms.TextInput(attrs = {'id':'llat'}), 
-                           required=True, initial=37.78, label="Lower Latitude")
-    ulat = forms.CharField(widget = forms.TextInput(attrs = {'id':'ulat'}), 
+    llat = forms.DecimalField(widget = forms.NumberInput(attrs = {'id':'llat'}), 
+                           required=True, initial=37.79, label="Lower Latitude",decimal_places=2, max_digits=5)
+    ulat = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'ulat'}), 
                            required=True, initial=42.16, label="Upper Latitude")
-    llon = forms.CharField(widget = forms.TextInput(attrs = {'id':'llon'}), 
+    llon = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'llon'}), 
                            required=True, initial=-99.14, label="Lower Longitude")
-    ulon = forms.CharField(widget = forms.TextInput(attrs = {'id':'ulon'}), 
+    ulon = forms.DecimalField(widget = forms.TextInput(attrs = {'id':'ulon'}), 
                            required=True, initial=-93.29, label="Upper Longitude")
     #rfuncs = forms.ChoiceField(label="Response Function")
     #rfuncs.choices = rchoices
@@ -68,12 +68,13 @@ class SubsetForm(forms.Form):
             # Create input file for fortran sensitivity code driver
             date = self.cleaned_data['runchoice']
             datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
-            fpath = "/home/aucolema/subsetGUI.txt".format(datestr)
+            fpath = "/home/aucolema/sens_gui/subsetGUI.txt".format(datestr)
             txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon']), 
                    str(self.cleaned_data['ulon']), str(self.cleaned_data['llat']), 
                    str(self.cleaned_data['ulat'])]
             #np.savetxt(fpath, txt, fmt="%s", delimiter='\n')
-            f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
+            f = open(fpath, 'w')
+            ####f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
             for item in txt:
                 f.write("%s\n" % item)
             
@@ -101,14 +102,14 @@ class SubsetForm(forms.Form):
         date = self.cleaned_data['runchoice']
         # Store dates in form YYMMDDHH
         datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
-        if os.path.exists('dates.txt'):
-            datelist = np.genfromtxt('dates.txt', dtype=str, delimiter=",")
-            f = open('dates.txt', 'a')
+        if os.path.exists('/home/aucolema/sens_gui/dates.txt'):
+            datelist = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', dtype=str, delimiter=",")
+            f = open('/home/aucolema/sens_gui/dates.txt', 'a')
             if datestr not in datelist:
                 datestr = "," + datestr
                 f.write(datestr)
         else:
-            f = open('dates.txt', 'w')   
+            f = open('/home/aucolema/sens_gui/dates.txt', 'w')   
             f.write(datestr)
         f.close()
         return

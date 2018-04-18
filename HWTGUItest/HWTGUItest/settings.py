@@ -24,9 +24,9 @@ with open('/home/aucolema/secret_key.txt') as f:
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.ttu.edu']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -119,13 +119,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+STATIC_ROOT = '/var/www/aucolema/static/'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    '/home/aucolema/'
-]
+STATICFILES_DIRS = []
 
 # Leaflet configuration
 LEAFLET_CONFIG = {
