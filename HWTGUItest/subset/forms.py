@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from threading import Condition
 import datetime
 import os
+import subprocess
 import numpy as np
 
 class SubsetForm(forms.Form):
@@ -65,10 +66,14 @@ class SubsetForm(forms.Form):
         if self.is_valid():
             # Create input file for fortran sensitivity code driver
             fpath = "/home/aucolema/sens_gui/subsetGUI.txt"
-            txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon'])[:6], 
-                   str(self.cleaned_data['ulon'])[:6], str(self.cleaned_data['llat'])[:6], 
-                   str(self.cleaned_data['ulat'])[:6]]
+            txt = [str(self.cleaned_data['rtime']), str(self.cleaned_data['llon'])[:8], 
+                   str(self.cleaned_data['ulon'])[:8], str(self.cleaned_data['llat'])[:8], 
+                   str(self.cleaned_data['ulat'])[:8]]
+
+            old=os.umask(0)
             f = open(os.open(fpath, os.O_CREAT | os.O_RDWR, 0o777), 'w')
+            os.umask(old)
+
             for item in txt:
                 f.write("%s\n" % item)
             

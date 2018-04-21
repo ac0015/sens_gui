@@ -15,13 +15,13 @@ def results(request):
 
 def evaluate(request):
     try:
-        lastten = np.genfromtxt('dates.txt', delimiter=',', dtype=str)[-1:-10:-1]
+        lastten = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', delimiter=',', dtype=str)[-1:-10:-1]
     except IOError:
         print("dates.txt does not exist.")
         lastten = []
     except IndexError:
         print("Insufficient number of values in dates.txt. Using last val")
-        lastval = np.genfromtxt('dates.txt', delimiter=',', dtype=str)
+        lastval = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', delimiter=',', dtype=str)
         lastten = [lastval]
     except Exception as e:
         raise(e)
