@@ -91,15 +91,15 @@ class SubsetForm(forms.Form):
         If createSubset() is called, add run initialization to text file containing
         list of all valid subsets.
         '''
-        date = self.cleaned_data['runchoice']
+        date = self.cleaned_data['runchoice'].rstrip()
         # Store dates in form YYMMDDHH
         datestr = str(date[:4] + '' + date[5:7] + '' + date[8:10] + '' + date[11:13])
         if os.path.exists('/home/aucolema/sens_gui/dates.txt'):
-            datelist = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', dtype=str, delimiter=",")
+            datelist = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', dtype=str, delimiter="\n")
             f = open('/home/aucolema/sens_gui/dates.txt', 'a')
             if datestr not in datelist:
-                datestr = "," + datestr
-                f.write(datestr)
+                datestr = "\n" + datestr
+                f.write(datestr.rstrip())
         else:
             f = open('/home/aucolema/sens_gui/dates.txt', 'w')   
             f.write(datestr)

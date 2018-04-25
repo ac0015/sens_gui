@@ -42,9 +42,6 @@
     </HEAD>
     <DIV class="tab">
       <button class="tablinks" onclick="openTab(event, 'Subset Metadata')" id="defaultOpen">Subset Metadata</button>
-      <button class="tablinks" onclick="openTab(event, 'UH Maximum')">UH Maximum</button>
-      <button class="tablinks" onclick="openTab(event, 'DBZ Coverage')">DBZ Coverage</button>
-      <button class="tablinks" onclick="openTab(event, 'UH Coverage')">UH Coverage</button>
     </DIV>
     <DIV id="Subset Metadata" class="tabcontent">
         <h4> Subset creation successful.</h4>
@@ -59,18 +56,6 @@
         <p><b>Response time:</b> f{{ form.cleaned_data.rtime }}</p>
         <p><b> Run Initialization used:</b> {{ form.cleaned_data.runchoice }}</p>
         <p><b>Subset Request submitted at:</b> {{ response.content }}</p>
-    </DIV>
-    <DIV id="UH Maximum" class="tabcontent">
-      <h3>Updraft Helicity 6-hour Maximum</h3>
-      <img height=800px width=700px src="{% static "sixpanel_sixhruhmax25_subuhmax_2018041300_f28.png" %}">
-    </DIV>
-        <DIV id="DBZ Coverage" class="tabcontent">
-      <h3>Reflectivity 6-hour Coverage</h3>
-      <img height=800px width=700px src="{% static "sixpanel_sixhrrefl40_subdbzcov_2018041300_f28.png" %}">
-    </DIV>
-    <DIV id="UH Coverage" class="tabcontent">
-      <h3>Updraft Helicity 6-hour Coverage</h3>
-      <img height=800px width=700px src="{% static "sixpanel_sixhruhmax25_subuhcov_2018041300_f28.png" %}">
     </DIV>
     <br>
     <button onclick="location.href='{% url 'index' %}'">Back to SENSEI</button>
