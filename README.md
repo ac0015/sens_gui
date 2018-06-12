@@ -1,4 +1,4 @@
-# SENSEI
+# SENSEI (SENsitivity Subsetting Ensemble Interface) 
 
 Implementation of ensemble subsetting technique as a web-based GUI written with Python3.6. 
 
