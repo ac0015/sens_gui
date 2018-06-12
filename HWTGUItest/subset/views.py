@@ -19,7 +19,7 @@ def results(request):
 @never_cache
 def evaluate(request):
     try:
-        lastten = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', delimiter='\n', dtype=str)[-1:-10:-1]
+        lastten = np.genfromtxt('/home/aucolema/sens_gui/dates.txt', delimiter='\n', dtype=str)[-1:-34:-1]
     except IOError:
         print("dates.txt does not exist.")
         lastten = []

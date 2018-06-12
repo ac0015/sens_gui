@@ -26,7 +26,7 @@ with open('/home/aucolema/secret_key.txt') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost','.ttu.edu']
 
 
 # Application definition

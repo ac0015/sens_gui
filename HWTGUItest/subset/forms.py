@@ -59,7 +59,22 @@ class SubsetForm(forms.Form):
     #rfuncs.choices = rchoices
     rtime = forms.IntegerField(widget = forms.NumberInput(attrs = {'max_value':24}),initial=18, label="Response Time")
     runchoice = forms.ChoiceField(label="Ensemble Run")
-    runchoice.choices = runchoices
+    runchoice.choices = []
+
+    def __init__(self, *args, **kwargs):
+        super(SubsetForm, self).__init__(*args, **kwargs)
+        now = datetime.datetime.utcnow()
+        hr = 0
+        run = now
+        newest = datetime.datetime(run.year, run.month,
+                               run.day, hr)
+        old = newest - datetime.timedelta(days=1)
+        oldest = old - datetime.timedelta(days=1)
+        runchoices = (
+        (newest, str(newest)),
+        )
+        self.fields['runchoice'].choices = runchoices
+
 
     def createSubset(self):
         submittime = datetime.datetime.utcnow()
